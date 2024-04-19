@@ -1,21 +1,28 @@
 trigger:
 - main
 
-stages:
-- stage: build
-  jobs:
-  - job: build 
-    pool:
-      vmImage: ubuntu-latest
-    steps: 
-    - task: Npm@1
-      inputs:
-        command: 'install'
-    - task: Npm@1
-      inputs:
-        command: 'run build'
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    cd $(Build.SourcesDirectory)
+    npm install
+  displayName: 'Install NPM Dependencies'
+
+- script: |
+    cd $(Build.SourcesDirectory)
+    npm run build
+  displayName: 'Build Project'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/path/to/artifacts'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish Build Artifacts'
