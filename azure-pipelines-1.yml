@@ -8,16 +8,14 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps: 
-
-  - task: Npm@1
+    - task: Npm@1
       inputs:
-       command: 'install'
-
-  - task: Npm@1
+        command: 'install'
+    - task: Npm@1
       inputs:
-       command: 'run build'
-  - task: PublishBuildArtifacts@1
+        command: 'run build'
+    - task: PublishBuildArtifacts@1
       inputs:
-       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-       ArtifactName: 'drop'
-       publishLocation: 'Container'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
